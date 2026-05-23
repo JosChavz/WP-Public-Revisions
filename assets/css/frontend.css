@@ -1,0 +1,90 @@
+/* REVISION MODAL */
+.wppr-history-box {
+    display: none;
+}
+
+/* ── Revision list ─────────────────────── */
+.wppr-revision-list {
+    margin: 2em 0;
+    padding: 1.5em;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background: #fafafa;
+}
+.wppr-heading {
+    margin: 0 0 0.25em;
+    font-size: 1.15em;
+}
+.wppr-subheading {
+    margin: 0 0 1em;
+    color: #666;
+    font-size: 0.9em;
+}
+.wppr-list {
+    margin: 0;
+    padding: 0 0 0 1.6em;
+    list-style: decimal;
+}
+.wppr-item {
+    margin-bottom: 0.5em;
+}
+.wppr-link {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3em 0.8em;
+    align-items: baseline;
+    text-decoration: none;
+    color: inherit;
+}
+.wppr-link:hover .wppr-label {
+    text-decoration: underline;
+    color: #0073aa;
+}
+.wppr-label {
+    font-weight: 500;
+}
+.wppr-author {
+    font-size: 0.85em;
+    color: #888;
+}
+
+/* ── Revision viewer notice ────────────── */
+.wppr-revision-notice {
+    margin: 1.5em 0;
+    padding: 1em 1.25em;
+    border-left: 4px solid #f0c36d;
+    background: #fef9ee;
+    border-radius: 4px;
+}
+.wppr-revision-notice p {
+    margin: 0 0 0.6em;
+}
+.wppr-back-link {
+    display: inline-block;
+    font-weight: 500;
+    text-decoration: none;
+}
+.wppr-back-link:hover {
+    text-decoration: underline;
+}
+.wppr-revision-content {
+    margin: 1.5em 0;
+}
+.wppr-no-revisions {
+    color: #888;
+    font-style: italic;
+}
+
+/* ── Dark-theme-friendly overrides via prefers-color-scheme ── */
+@media (prefers-color-scheme: dark) {
+    .wppr-revision-list {
+        background: #1e1e1e;
+        border-color: #333;
+    }
+    .wppr-subheading { color: #aaa; }
+    .wppr-author     { color: #999; }
+    .wppr-revision-notice {
+        background: #2c2614;
+        border-left-color: #c9a84c;
+    }
+}

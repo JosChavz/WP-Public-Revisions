@@ -1,0 +1,15 @@
+{
+  "name": "hozayx/wp-public-revisions",
+  "autoload": {
+    "psr-4": {
+      "WpPublicRevisions\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Hozay",
+      "email": "josmchavz@gmail.com"
+    }
+  ],
+  "require": {}
+}
