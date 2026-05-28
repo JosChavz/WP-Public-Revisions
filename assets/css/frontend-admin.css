@@ -1,0 +1,133 @@
+/* Copied from WP primary btn */
+.wppr_metabox-btn {
+  outline: none;
+  border: none;
+	align-items: center;
+	border-radius: 2px;
+	box-sizing: border-box;
+	min-height: 36px;
+	padding: 8px 12px;
+    cursor: pointer;
+}
+
+#wppr_create-revision-btn {
+    background: var(--wp-components-color-accent-darker-10,var(--wp-admin-theme-color-darker-10,#2145e6));
+  color: var(--wp-components-color-accent-inverted,#fff);
+}
+
+#wppr_btn-disabled-text {
+    margin-top: 5px;
+    color: red;
+}
+
+/* Buttons */
+#wppr_metabox-buttons {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+/* Modal */
+dialog#wppr_history-revisions-dialog {
+    border: none;
+    border-radius: 8px;
+    padding: 24px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+dialog#wppr_history-revisions-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+}
+
+dialog#wppr_history-revisions-dialog[open] {
+    animation: fade-in 0.2s ease-out;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Header inside of Modal */
+.wppr-dialog-header {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+.wppr-dialog-header h3 {
+    font-size: 0.9rem;
+}
+
+/* Loading Spinner in Dialog */
+.wppr-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 40px 0;
+}
+
+.wppr-spinner-circle {
+    width: 32px;
+    height: 32px;
+    border: 3px solid #e0e0e0;
+    border-top-color: #3858e9;
+    border-radius: 50%;
+    animation: wppr-spin 0.6s linear infinite;
+}
+
+.wppr-spinner p {
+    color: #666;
+    font-size: 14px;
+    margin: 0;
+}
+
+@keyframes wppr-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Data Wrapper */
+.wppr-revision-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 6px;
+}
+.wppr-revision-wrapper:hover {
+    background: #efefef;
+    transition: background-color 90ms linear;
+    -webkit-transition: background-color 90ms linear;
+}
+
+#wppr_history-revision-dialog-content #wppr_dialog-results {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.wppr-revision-wrapper .wppr-revision-data-wrapper p {
+    margin: 0;
+    font-weight: bold;
+}
+.wppr-revision-wrapper .wppr-revision-data-wrapper time {
+    color: gray;
+}
+
+/* Delete button */
+.wppr-revision-wrapper .wppr_revision-delete {
+    background-color: #880808;
+    color: white;
+}

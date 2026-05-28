@@ -2,39 +2,32 @@
 
 namespace WpPublicRevisions\Frontend;
 
+use WpPublicRevisions\Core\RevisionStore;
+
 class Viewer {
     public function init() {
         add_filter( 'the_content', [$this, 'wppr_maybe_show_revision'], 3 );
     }
 
-    function wppr_maybe_show_revision( $content ) {
+    public function wppr_maybe_show_revision( $content ) {
+        global $post;
         if ( ! isset( $_GET['wppr_view_revision'] ) ) {
             return $content;
         }
 
-        if ( ! is_singular() || ! is_main_query() ) {
+        if ( ! is_singular() || ! is_main_query() || ! $post ) {
             return $content;
         }
 
+        $revision_store = new RevisionStore( $post->ID );
         $revision_id = absint( $_GET['wppr_view_revision'] );
-        $revision    = get_post( $revision_id );
+        $revision = $revision_store->fetch_revision( $revision_id );
 
-        if ( ! $revision || 'revision' !== $revision->post_type ) {
+        if ( is_wp_error( $revision) ) {
             return $content;
         }
 
-        // Security: make sure the revision belongs to a published parent
-        $parent = get_post( $revision->post_parent );
-        if ( ! $parent || 'publish' !== $parent->post_status ) {
-            return $content;
-        }
-
-        // Make sure the revision belongs to the current post
-        if ( $parent->ID !== get_the_ID() ) {
-            return $content;
-        }
-
-        $date = get_the_date( 'F j, Y \a\t g:i A', $revision );
+        $date = get_the_date( 'F j, Y \a\t g:i A', $revision->timestamp );
 
         ob_start();
         ?>
@@ -49,13 +42,13 @@ class Viewer {
                 );
                 ?>
             </p>
-            <a class="wppr-back-link" href="<?php echo esc_url( get_permalink( $parent ) ); ?>">
+            <a class="wppr-back-link" href="<?php echo esc_url( get_permalink( $revision->post_id ) ); ?>">
                 &larr; <?php esc_html_e( 'Return to the current version', 'wp-public-revisions' ); ?>
             </a>
         </div>
 
         <div class="wppr-revision-content">
-            <?php echo wp_kses_post( $revision->post_content ); ?>
+            <?php echo wp_kses_post( $revision->content ); ?>
         </div>
         <?php
         return ob_get_clean();

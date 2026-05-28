@@ -2,6 +2,8 @@
 
 namespace WpPublicRevisions\Frontend;
 
+use WpPublicRevisions\Core\RevisionStore;
+
 class Shortcode {
 
     function init() {
@@ -27,7 +29,7 @@ class Shortcode {
      *
      * Example: [revision_history limit="10" date_fmt="Y-m-d"]
      */
-    function wppr_revision_history_shortcode( $atts ) {
+    public function wppr_revision_history_shortcode( $atts ) {
         $atts = shortcode_atts( array(
             'post_id'  => 0,
             'limit'    => 20,
@@ -46,16 +48,12 @@ class Shortcode {
             return '<!-- WP Public Revisions: post not published -->';
         }
 
-        $revisions = wp_get_post_revisions( $post_id, array(
-            'posts_per_page' => intval( $atts['limit'] ),
-            'order'          => 'DESC',             // newest first
-            'post_status'    => 'inherit',
-        ) );
+        $revision_store = new RevisionStore( $post_id);
+        $revisions = $revision_store->fetch_revisions();
 
-        // Filter out autosaves — only keep real saves
-        $revisions = array_filter( $revisions, function ( $rev ) {
-            return false === wp_is_post_autosave( $rev );
-        } );
+        if ( is_wp_error( $revisions ) ) {
+            return 'Error.';
+        }
 
         if ( empty( $revisions ) ) {
             return '<p class="wppr-no-revisions">' . esc_html__( 'No revisions yet.', 'wp-public-revisions' ) . '</p>';
@@ -70,7 +68,7 @@ class Shortcode {
                 <?php
                 printf(
                     /* translators: %d = number of revisions */
-                    esc_html__( '%d previous version(s).', WPR_SLUG ),
+                    esc_html__( '%d previous version(s).', 'wp-public-revisions' ),
                     count( $revisions )
                 );
                 ?>
@@ -83,10 +81,10 @@ class Shortcode {
                 <?php
                 $index = count( $revisions );
                 foreach ( $revisions as $rev ) :
-                    $author_name = get_the_author_meta( 'display_name', $rev->post_author );
-                    $date        = get_the_date( $atts['date_fmt'], $rev );
+                    $author_name = get_the_author_meta( 'display_name', $rev->author );
+                    $date        = date($atts['date_fmt'], strtotime($rev->timestamp) );
                     $view_url    = add_query_arg( array(
-                        'wppr_view_revision' => $rev->ID,
+                        'wppr_view_revision' => $rev->id,
                     ), get_permalink( $post_id ) );
                     ?>
                     <li class="wppr-item">
