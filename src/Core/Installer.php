@@ -11,8 +11,9 @@ namespace WpPublicRevisions\Core;
 class Installer {
     static $wppr_db_version = "1.1";
 
-    public static function install( ) {
-        global $wpdb;
+    public static function install( ): void
+    {
+			global $wpdb;
 
         $table_name = $wpdb->prefix ."wppr_revisions";
         $charset_collate = $wpdb->get_charset_collate();
@@ -33,21 +34,42 @@ class Installer {
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 	    dbDelta( $sql );
 
-        if ( $requires_db_update ) {
-            $prev_db_version = get_option('wppr_db_version', '0');
+      if ( $requires_db_update ) {
+          $prev_db_version = get_option('wppr_db_version', '0');
 
-            if ( version_compare( $prev_db_version, '1.0' ,'==') ) {
-                $wpdb->query("ALTER TABLE $table_name DROP COLUMN is_base, DROP COLUMN base_content, DROP COLUMN diff");
-            }
-        }
+          if ( version_compare( $prev_db_version, '1.0' ,'==') ) {
+              $wpdb->query("ALTER TABLE $table_name DROP COLUMN is_base, DROP COLUMN base_content, DROP COLUMN diff");
+          }
+      }
 
-        update_option('wppr_db_version', self::$wppr_db_version );
-
+      update_option('wppr_db_version', self::$wppr_db_version );
+			
+			// Adds the default value options for the allowed post types
+	    self::initialize_options();
     }
-
-    private static function check_version() {
+	
+	/**
+	 * Compares the current database version with the required version.
+	 *
+	 * @return bool|int True if the current version is less than the required version, false otherwise. Returns the version comparison result if versions are equal.
+	 */
+		private static function check_version(): bool|int
+    {
         $db_version = get_option('wppr_db_version', '0');
 
         return version_compare( $db_version, self::$wppr_db_version, '<' );
     }
+		
+		private static function initialize_options(): void {
+			$post_types = get_post_types( [ 'public' => true ], 'names' );
+			$defaults   = [];
+			
+			foreach ( $post_types as $pt ) {
+				if ( 'attachment' === $pt ) { continue; }
+				$defaults[ $pt ] = 1;
+			}
+			
+			// add_option does NOTHING if the option already exists
+			add_option( 'wppr_post_type_option', $defaults );
+		}
 }

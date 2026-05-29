@@ -27,7 +27,7 @@ class Viewer {
             return $content;
         }
 
-        $date = get_the_date( 'F j, Y \a\t g:i A', $revision->timestamp );
+        $date = wp_date( 'F j, Y \a\t g:i A', strtotime( $revision->timestamp ) );
 
         ob_start();
         ?>

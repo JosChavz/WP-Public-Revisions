@@ -5,7 +5,8 @@ namespace WpPublicRevisions\Admin;
 use WpPublicRevisions\Core\RevisionStore;
 
 class Metabox {
-    public function init() {
+    public function init(): void
+    {
         add_action( 'add_meta_boxes', [$this, 'wppr_add_meta_box'] );
         add_action('admin_enqueue_scripts', [$this, 'enqueue_ajax_script']);
         add_action('wp_ajax_wppr_create_revision', [$this,'handle_create_revision'] );
@@ -13,7 +14,8 @@ class Metabox {
         add_action('wp_ajax_wppr_delete_revision', [$this,'handle_delete_revision'] );
     }
 
-    public function enqueue_ajax_script() {
+    public function enqueue_ajax_script(): void
+    {
         wp_enqueue_style('wppr-metabox-css', WPR_FRONTEND_PATH .'assets/css/frontend-admin.css');
 
         wp_enqueue_script(
@@ -31,7 +33,8 @@ class Metabox {
         ]);
     }
 
-    public function handle_create_revision() {
+    public function handle_create_revision(): void
+    {
         check_ajax_referer('wppr_create_revision', 'nonce');
 
         $post_id = intval( $_POST['post_id'] );
@@ -57,7 +60,8 @@ class Metabox {
         wp_send_json_success( $revision, 201 );
     }
 
-    public function handle_fetch_revisions() {
+    public function handle_fetch_revisions(): void
+    {
         check_ajax_referer("wppr_fetch_revisions", "fetch_nonce");
 
         $post_id = intval( $_GET['post_id'] );
@@ -81,7 +85,8 @@ class Metabox {
         wp_send_json_success($revisions, 200);
     }
 
-    public function handle_delete_revision() {
+    public function handle_delete_revision(): void
+    {
         check_ajax_referer('wppr_delete_revision', 'delete_nonce');
 
         $rev_id = intval( $_POST['rev_id'] );
@@ -110,9 +115,12 @@ class Metabox {
      * TODO: Use an option where you add the metabox to specific post types
      * @return void
      */
-    public function wppr_add_meta_box() {
-        $post_types = get_post_types( array( 'public' => true ), 'names' );
-        foreach ( $post_types as $pt ) {
+    public function wppr_add_meta_box(): void
+    {
+        $options = get_option( 'wppr_post_type_option', [] );
+
+        foreach ( $options as $pt => $enabled ) {
+            if ( ! $enabled ) continue;
             add_meta_box(
                 'wppr_info',
                 __( 'Public Revisions', 'wp-public-revisions' ),

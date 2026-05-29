@@ -1,6 +1,5 @@
 jQuery(document).ready(function ($) {
   const createBtn = $("#wppr_create-revision-btn");
-  const helpText = $("#wppr_btn-disabled-text");
   const container = $("#wppr_btn-disabled-text");
   const historyDialogBtn = $("#wppr_history-revisions-btn");
   const historyDialog = $("#wppr_history-revisions-dialog");
