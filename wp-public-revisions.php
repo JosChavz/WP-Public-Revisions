@@ -3,7 +3,7 @@
 	 * Plugin Name: WP Public Revisions
 	 * Plugin URI: https://github.com/joschavz/wp-public-revisions
 	 * Description: Display a public revision history on any post or page via the [revision_history] shortcode. Visitors can click through to read any past version of the content.
-	 * Version: 1.2.1
+	 * Version: 1.2.2
 	 * Requires PHP: 8.3
 	 * Author: Jose Manuel Chavez
 	 * Author URI: https://hozay.tech/
