@@ -26,7 +26,7 @@
             $revision_id = absint($_GET['wppr_view_revision']);
             $revision = $revision_store->fetch_revision($revision_id);
 
-            if (is_wp_error($revision)) {
+            if (is_wp_error($revision) || (int)$revision->post_id !== $post->ID) {
                 return $content;
             }
 

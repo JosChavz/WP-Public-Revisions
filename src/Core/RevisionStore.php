@@ -67,7 +67,7 @@
 		 */
 		public function fetch_revision(int $rev_id): object
 		{
-			$res = $this->wpdb->get_row($this->wpdb->prepare("SELECT * FROM $this->table_name WHERE id=%d", $rev_id));
+			$res = $this->wpdb->get_row($this->wpdb->prepare("SELECT * FROM $this->table_name WHERE id=%d AND post_id=%d", $rev_id, $this->post_id));
 			
 			if (!$res) {
 				return new WP_Error("not_found", __("Post was not found!", "wp-public-revisions"));
