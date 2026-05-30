@@ -1,33 +1,85 @@
 /* REVISION MODAL */
 .wppr-history-box {
     display: none;
+    margin-top: 1em;
+}
+
+/* ── Show history button ───────────────── */
+.wppr-previous-button {
+    display: inline-block;
+    margin: 0;
+    padding: 0.5em 1.2em;
+    font-size: 0.85em;
+    font-weight: 500;
+    line-height: 1.4;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 1px solid var(--wp--preset--color--primary, #0073aa);
+    background: var(--wp--preset--color--primary, #0073aa);
+    color: #fff;
+    transition: opacity 150ms ease;
+}
+
+.wppr-previous-button:hover {
+    opacity: 0.85;
+}
+
+/* ── Loading spinner ───────────────────── */
+.wppr-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 2em 0;
+    color: #888;
+    font-size: 0.9em;
+}
+
+.wppr-spinner-circle {
+    width: 28px;
+    height: 28px;
+    border: 3px solid #e0e0e0;
+    border-top-color: var(--wp--preset--color--primary, #0073aa);
+    border-radius: 50%;
+    animation: wppr-spin 0.7s linear infinite;
+}
+
+@keyframes wppr-spin {
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* ── Revision list ─────────────────────── */
 .wppr-revision-list {
     margin: 2em 0;
-    padding: 1.5em;
+    padding: 1.5em 1.75em;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     background: #fafafa;
 }
+
 .wppr-heading {
-    margin: 0 0 0.25em;
+    margin: 0 0 0.15em;
     font-size: 1.15em;
 }
+
 .wppr-subheading {
-    margin: 0 0 1em;
+    margin: 0 0 1.2em;
     color: #666;
     font-size: 0.9em;
 }
+
 .wppr-list {
     margin: 0;
     padding: 0 0 0 1.6em;
     list-style: decimal;
 }
+
 .wppr-item {
     margin-bottom: 0.5em;
 }
+
 .wppr-link {
     display: flex;
     flex-wrap: wrap;
@@ -36,13 +88,16 @@
     text-decoration: none;
     color: inherit;
 }
+
 .wppr-link:hover .wppr-label {
     text-decoration: underline;
     color: #0073aa;
 }
+
 .wppr-label {
     font-weight: 500;
 }
+
 .wppr-author {
     font-size: 0.85em;
     color: #888;
@@ -56,20 +111,25 @@
     background: #fef9ee;
     border-radius: 4px;
 }
+
 .wppr-revision-notice p {
     margin: 0 0 0.6em;
 }
+
 .wppr-back-link {
     display: inline-block;
     font-weight: 500;
     text-decoration: none;
 }
+
 .wppr-back-link:hover {
     text-decoration: underline;
 }
+
 .wppr-revision-content {
     margin: 1.5em 0;
 }
+
 .wppr-no-revisions {
     color: #888;
     font-style: italic;
@@ -81,10 +141,31 @@
         background: #1e1e1e;
         border-color: #333;
     }
-    .wppr-subheading { color: #aaa; }
-    .wppr-author     { color: #999; }
+
+    .wppr-subheading {
+        color: #aaa;
+    }
+
+    .wppr-author {
+        color: #999;
+    }
+
     .wppr-revision-notice {
         background: #2c2614;
         border-left-color: #c9a84c;
+    }
+
+    .wppr-spinner {
+        color: #aaa;
+    }
+
+    .wppr-spinner-circle {
+        border-color: #444;
+        border-top-color: var(--wp--preset--color--primary, #4ea8d2);
+    }
+
+    .wppr-previous-button {
+        border-color: var(--wp--preset--color--primary, #4ea8d2);
+        background: var(--wp--preset--color--primary, #4ea8d2);
     }
 }
