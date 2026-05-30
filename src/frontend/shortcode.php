@@ -18,8 +18,8 @@
 
         function wppr_enqueue_assets(): void
         {
-            wp_register_style('wppr-public-css', WPR_FRONTEND_PATH . 'assets/css/frontend.css');
-            wp_register_script('wppr-public-js', WPR_FRONTEND_PATH . 'assets/js/frontend.js', ['jquery'], '1.0', true);
+            wp_register_style('wppr-public-css', WPPR_FRONTEND_PATH . 'assets/css/frontend.css');
+            wp_register_script('wppr-public-js', WPPR_FRONTEND_PATH . 'assets/js/frontend.js', ['jquery'], '1.0', true);
             wp_set_script_translations('wppr-public-js', 'wp-public-revisions');
 
             wp_enqueue_style('wppr-public-css');
@@ -108,7 +108,7 @@
             ob_start();
             ?>
             <div class="wppr-revision-list">
-                <h3 class="wppr-heading"><?php esc_html_e('Revision History', WPR_SLUG); ?></h3>
+                <h3 class="wppr-heading"><?php esc_html_e('Revision History', 'wp-public-revisions'); ?></h3>
                 <p class="wppr-subheading">
                     <?php
                         printf(

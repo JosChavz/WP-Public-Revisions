@@ -74,6 +74,14 @@
                             'sanitize_callback' => [$this, 'sanitize_wppr_post_type_option'],
                     ]
             );
+            register_setting(
+                    'wppr_options',
+                    'wppr_max_revisions',
+                    [
+                            'label' => __('Maximum Revisions', 'wp-public-revisions'),
+                            'sanitize_callback' => [$this, 'sanitize_wppr_max_revisions'],
+                    ]
+            );
 
             add_settings_section(
                     'wppr_post_type_option_section',
@@ -92,6 +100,27 @@
                             'class' => 'wppr_post_type_option',
                     ]
             );
+
+            add_settings_field(
+                    'wppr_max_revisions',
+                    __('Max Revisions', 'wp-public-revisions'),
+                    [$this, 'render_field_max_revisions'],
+                    'wppr_options',
+                    'wppr_post_type_option_section',
+            );
+        }
+
+        public function sanitize_wppr_max_revisions($input): int
+        {
+            if (!is_numeric($input)) {
+                return WPPR_MAX_REVISIONS;
+            }
+
+            if ($input < 1 || $input > WPPR_MAX_REVISIONS) {
+                return WPPR_MAX_REVISIONS;
+            }
+
+            return $input;
         }
 
         public function sanitize_wppr_post_type_option($input): array
@@ -105,6 +134,12 @@
             return array_filter($input, function ($post_type) use ($valid) {
                 return isset($valid[$post_type]) && 'attachment' !== $post_type;
             }, ARRAY_FILTER_USE_KEY);
+        }
+
+        public function render_field_max_revisions(): void
+        {
+            $max_revision_option = get_option('wppr_max_revisions');
+            printf('<input min="1" max="%d" type="number" id="wppr_max_revisions" value="%d" name="wppr_max_revisions" />', WPPR_MAX_REVISIONS, $max_revision_option);
         }
 
         public function render_field_post_type(): void

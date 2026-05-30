@@ -29,6 +29,14 @@
 		{
 			if (!current_user_can("edit_post", $this->post_id)) return new WP_Error("forbidden", __("This user cannot post a revision", "wp-public-revisions"));
 			
+			// Has to be less than the current max revision count
+			$revision_count = $this->fetch_revisions_count();
+			$max_revisions = get_option('wppr_max_revisions');
+			
+			if ($revision_count > $max_revisions) {
+				return new WP_Error('maxed_out', __("There is too many revisions", "wp-public-revisions"));
+			}
+			
 			// Make sure that the content is different
 			$res = $this->wpdb->get_var($this->wpdb->prepare("SELECT content FROM $this->table_name WHERE post_id = %d ORDER BY rev_no DESC LIMIT 1", $this->post_id));
 			
@@ -40,13 +48,13 @@
 			}
 			
 			// Post the revision
-			$revision_counts = $this->wpdb->get_var($this->wpdb->prepare("SELECT MAX(rev_no) FROM $this->table_name WHERE post_id=%d", $this->post_id));
+			$current_rev_no = $this->wpdb->get_var($this->wpdb->prepare("SELECT MAX(rev_no) FROM $this->table_name WHERE post_id=%d", $this->post_id));
 			$compressed_content = Diff::generate_diff($content);
 			
 			$args = array(
 				"post_id" => $this->post_id,
 				"author" => get_current_user_id(),
-				"rev_no" => $revision_counts + 1,
+				"rev_no" => $current_rev_no + 1,
 				"label" => $label,
 				"content" => $compressed_content,
 			);

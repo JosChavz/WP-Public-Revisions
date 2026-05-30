@@ -17,11 +17,11 @@
 
         public function enqueue_ajax_script(): void
         {
-            wp_enqueue_style('wppr-metabox-css', WPR_FRONTEND_PATH . 'assets/css/frontend-admin.css');
+            wp_enqueue_style('wppr-metabox-css', WPPR_FRONTEND_PATH . 'assets/css/frontend-admin.css');
 
             wp_enqueue_script(
                     'wppr-metabox-ajax',
-                    WPR_FRONTEND_PATH . 'assets/js/admin-metabox.js',
+                    WPPR_FRONTEND_PATH . 'assets/js/admin-metabox.js',
                     ['jquery', 'wp-data', 'wp-editor'],
                     null,
                     true
